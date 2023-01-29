@@ -1,0 +1,31 @@
+.Header__search {
+    background-color: #f39a25;
+    padding: 5px;
+    height: 32px !important;
+    width: 32px !important;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.Header__amount {
+    /* display: flex;
+    wrap: flex; */
+    aspect-ratio: 1 / 1;
+    position: relative;
+    align-items: center;
+    background-color: #aaaaaa;
+    border-radius: 50%;
+    /* width: calc( + 5px); */
+    /* width: calc($(p); */
+    width: 20px;
+    padding: none;
+    margin: none;
+    vertical-align: middle;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 auto;
+    padding-top: 1px;
+    /* /* padding-top: 1.5px; */
+    padding-left: 1px */
+    /* margin: 5px; */
+}
