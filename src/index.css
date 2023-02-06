@@ -8,18 +8,18 @@ body {
   background: #dddfe0;
   user-select: none;
   /* overflow-y: hidden; */
-  
+  overflow-x: hidden;
 }
 
 /* ::-webkit-scrollbar-track {
   background-color: #656565;
-}
+/* } */
 
 ::-webkit-scrollbar {
-  width: 10px;
+  display: none;
 }
 
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb { 
   background: #d2d2d2;
   border-radius: 100px;
 }

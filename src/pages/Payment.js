@@ -9,51 +9,103 @@ import { getCartTotal } from './../reducer'
 import axios from './../axios'
 
 function Payment() {
-    const [{ cart }] = useStateValue();
+    const [{ cart }, dispatch] = useStateValue();
 
     const navigate = useNavigate();
-    
+
+    const [succeeded, setSucceeded] = useState(false);
+    const [processing, setProcessing] = useState(false);
     const [error, setError] = useState(null);
     const [disabled, setDisabled] = useState(true);
-    const [processing, setProcessing] = useState("");
-    const [succeeded, setSucceded] = useState(false);
     const [clientSecret, setClientSecret] = useState(true);
+
+    const stripe = useStripe();
+    
+    const elements = useElements();
+
+    let address;
 
     useEffect(() => {
         const getClientSecret = async () => {
+
+            console.log("Sending request to backend")
+
+            console.log(address)
+
+            // console.log(elements.getElement(CardElement))
+
             const response = await axios({
                 method: 'post',
+                // Stripe expects the total in a currencies subunits
                 url: `/payments/create?total=${getCartTotal(cart) * 100}`
-            })
-            
+            });
+
+            console.log("Done")
+
             setClientSecret(response.data.clientSecret)
         }
 
         getClientSecret();
     }, [cart])
 
+    console.log(clientSecret)
+
     const appearance = {
         theme: 'flat'
     };
+
+    const options = {
+        clientSecret: clientSecret,
+        // Fully customizable with appearance API.
+        appearance: appearance
+    };
+
+    // Set up Stripe.js and Elements to use in checkout form, passing the client secret obtained in step 3
+    // const element = stripe.elements(options);
+
+
+    // const paymentElement = element.create('payment');
+    // paymentElement.mount('#Payment');
         
     // "sk_test_51L70F7LkNFBBMaUynWNJ9dD9vzkMMAsCrwBrNzLgqSNkok70geu8Idm6o3fP3065xdDILHZbx0EY2VK98nWeWKkw00cJnu7kul"
 
-    const stripe = useStripe();
-    
-    const elements = useElements();
-
     const handleSubmit = async(e) => {
         e.preventDefault();
-        e.setProcessing(true);
+        setProcessing(true);
+
+        // const addressElement = elements.getElement('address');
+        // const {complete, value} = await addressElement.getValue();
 
         const payload = await stripe.confirmCardPayment(clientSecret, {
             payment_method: {
-                card: elements.getElement(CardElement)
-            }
+                card: elements.getElement(CardElement),
+            },
+            // shipping: {
+            //     address: value.Address,
+            //     name: value.name
+            // }
+
         }).then(({ paymentIntent }) => {
-            setSucceded(true);
+            // paymentIntent = payment confirmation
+
+            // db
+            //   .collection('users')
+            //   .doc(user?.uid)
+            //   .collection('orders')
+            //   .doc(paymentIntent.id)
+            //   .set({
+            //       basket: basket,
+            //       amount: paymentIntent.amount,
+            //       created: paymentIntent.created
+            //   })
+
+            setSucceeded(true);
             setError(null)
             setProcessing(false)
+
+            dispatch({
+                type: 'EMPTY_CART'
+            })
 
             navigate('/', { replace: true })
         })
@@ -96,19 +148,29 @@ function Payment() {
                     </Title>
                     <PaymentDetails>
                         <PaymentForm onSubmit={handleSubmit}>
-                            <AddressElement options={{
+                            {/* <AddressElement options={{
                                 mode: 'shipping', 
                                 allowedCountries: ['US'],
                                 blockPoBox: true,
                                 fields: {
-                                    email: 'always',
+                                    phone: 'always',
                                 },
                                 autocomplete: {
                                     mode: "automatic"
                                 },
                                 layout: "tabs"
-                            }} />
+                            }} onChange={(event) => {
+                                if (event.complete) {
+                                    // Extract potentially complete address
+                                    address = event.value.address;
+                                }
+                            }} id="address-element" /> */}
                             <CardElement onChange={handleChange} id="payment-element" options={{layout: "tabs"}} />
+                            {/* <PaymentElement onChange={handleChange} id="payment-element" options={options} /> */}
+
+                            <div id="Payment">
+
+                            </div>
 
                             <PriceContainer>
                                 <CurrencyFormat 
@@ -123,7 +185,7 @@ function Payment() {
                                     thousandSeparator={true}
                                     prefix={"$"} />
 
-                                <button disabled={processing || disabled || succeeded}>
+                                <button onClick={handleSubmit} disabled={processing || disabled || succeeded}>
                                     <span>{processing ? <p>Processing</p> : "Buy Now"}</span>
                                 </button>
                             </PriceContainer>

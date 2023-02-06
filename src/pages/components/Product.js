@@ -4,7 +4,7 @@ import StarIcon from '@mui/icons-material/Star';
 import './Product.css'
 import { useStateValue } from '../../StateProvider';
 
-function Product({ id, title, image, price, rating }) {
+function Product({ id, title, image, price, rating, link }) {
     const [{ cart }, dispatch] = useStateValue();
     
     const addToCart = () => {
@@ -20,10 +20,15 @@ function Product({ id, title, image, price, rating }) {
         })
     }
 
+    const open = () =>{
+        window.open(link, '_blank')
+    }
+
     return (
         <Container>
             <Wrap>
                 <p>{title}</p>
+                <ProductImage src={image} />
                 <Price>
                     <small>$</small>
                     <strong>{price}</strong>
@@ -33,8 +38,7 @@ function Product({ id, title, image, price, rating }) {
                         <StarIcon className='Product__Star' />
                     ))}
                 </Rating>
-                <ProductImage src={image} />
-                <Button onClick={addToCart}>Add to Cart</Button>
+                <Button onClick={open}>Shop now</Button>
             </Wrap>
         </Container>
     )
@@ -44,22 +48,26 @@ export default Product
 
 const Container = styled.div`
     /* display: flex; */
-    z-index: 100;
+    z-index: 10000000000;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    margin: 10px;
-    padding: 20px;
+    margin-left: 10px;
+    /* padding: 20px; */
     width: 100%;
     /* max-height: 1000px; */
     min-width: 100px;
     z-index: 1;
     background-color: white;
     border: 1px solid #dedede;
-    border-radius: 4px;
-
+    border-radius: 8px;
+    /* margin-right: -10px; */
+    /* height: 400px; */
+    /* display: flex; */
+    /* align-items: center; */
+    
     img {
-        max-height: 200px;
+        height: 200px;
         width: 100%;
         object-fit: contain;
         margin-bottom: 15px;
@@ -67,6 +75,7 @@ const Container = styled.div`
 `
 
 const Wrap = styled.div`
+    z-index: 10000000000;
     margin-bottom: 15px;
     /* display: flex; */
     z-index: 100;
@@ -80,6 +89,8 @@ const Wrap = styled.div`
     padding-top: 0px;
     align-items: center;
     display: flex;
+    text-align: center;
+    padding-top: -5px;
 `
 
 const Rating = styled.div`
@@ -96,9 +107,11 @@ const Button = styled.button`
     border-color: #a88734 #9c7e31 #846a29;
     border: none;
     height: 3vh;
-    width: 10vw;
+    /* width: 10vw; */
     color: #111111;
     border-radius: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
 
     &:hover {
         background-color: #c9a23e;

@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "fir-a9238"
-  }
+    "default": "list-2d620"
+  },
+  "targets": {},
+  "etags": {}
 }

@@ -1,0 +1,5 @@
+@media (min-width: 200px) {
+    .product {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}

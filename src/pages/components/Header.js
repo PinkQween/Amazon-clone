@@ -22,26 +22,26 @@ function Header() {
     //     if (window.location.pathname != '/login') {
             return (
                 <Nav>
-                    <Link to="/">
+                    {/* <Link to="/">
                         <Logo src="https://pngimg.com/uploads/amazon/amazon_PNG11.png" />
-                    </Link>
+                    </Link> */}
                     <SearchBar>
-                        <InputField type="text" />
+                        <InputField type="text" placeholder=' Search Anything' />
                         <SearchIcon className="Header__search" />
                     </SearchBar>
-                    <NavMenu>
+                    {/* <NavMenu> */}
                         {/* <Link style={{textDecoration: 'none'}} to={!user && "/login"} >
                             <div onClick={handleAuth}>
                                 <Login>{user ? 'LOGOUT' : 'LOGIN'}</Login>
                             </div>
                         </Link> */}
-                        <a>
+                        {/* <a>
                             <Orders>ORDERS</Orders>
                         </a>
                         <Link style={{textDecoration: 'none'}} to="/checkout" >
                             <Cart><span>CART</span><p className='Header__amount'>{cart?.length}</p></Cart>
                         </Link>
-                    </NavMenu>
+                    </NavMenu> */}
                     {/* <ProfileIcon src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/70D1C2E35B62D55C4C917AF30957AF9BE8D60FC2089B90C131B275E86EFD0553/scale?width=280&aspectRatio=1.00&format=png" /> */}
                 </Nav>
             )
@@ -63,6 +63,7 @@ const Nav = styled.nav`
     top: 0;
     overflow-x: hidden;
     z-index: 100000000;
+    min-width: calc(100vw - 1px);
 `
 
 const Logo = styled.img`
@@ -79,6 +80,7 @@ const NavMenu = styled.div`
     display: flex;
     margin-left: 10px;
     margin-right: -15px;
+    width: calc(100vw + 5px);
 
     a {
         color: white;
@@ -117,7 +119,7 @@ const NavMenu = styled.div`
 const SearchBar = styled.div`
     display: flex;
     flex: 1;
-    margin-left: 25px;
+    /* margin-left: 25px; */
     border: none;
 `
 
